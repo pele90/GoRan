@@ -5,13 +5,15 @@
 #include "PlayerCharacter.h"
 #include "JumpingPlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "BalanceTable.h"
 
 // Sets default values
 ALevelGenerator::ALevelGenerator()
+	: _difficultyIndex(0)
+
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
@@ -23,6 +25,8 @@ void ALevelGenerator::BeginPlay()
 	{
 		_playerCharacter = Cast<APlayerCharacter>(playerController->GetPawn());
 	}
+
+	UpdateDifficultyParameters();
 
 	CreateStartPlatform();
 }
@@ -56,13 +60,20 @@ void ALevelGenerator::Tick(float DeltaTime)
 			AActor* platformToRemove = nullptr;
 			if(_platformQueue.Dequeue(platformToRemove))
 			{
-				platformToRemove->SetLifeSpan(10.0f);
+				platformToRemove->SetLifeSpan(30.0f);
 			}
 
 			_lastPlatform = newPlatform;
 		}
 	}
 
+	_gameTimer += DeltaTime;
+
+	// if time to change difficulty
+	if (_gameTimer > _timeToChangeDifficulty)
+	{
+		UpdateDifficultyParameters();
+	}
 }
 
 void ALevelGenerator::CreateStartPlatform()
@@ -84,7 +95,7 @@ void ALevelGenerator::CreateStartPlatform()
 	{
 		newPlatform = GetWorld()->SpawnActor<AActor>(_platformClass, spawnLocation, rotation, spawnInfo);
 
-		FVector platformScale = newPlatform->GetActorScale3D();
+		platformScale = newPlatform->GetActorScale3D();
 		platformScale.X = FMath::RandRange(_minPlatformSize, _maxPlatformSize);
 		newPlatform->SetActorScale3D(platformScale);
 
@@ -110,20 +121,42 @@ FVector ALevelGenerator::GetNewLocation(AActor* lastPlatform, AActor* newPlatfor
 	float wantedHorizontalDistance = FMath::RandRange(_minHorizontalDistance, _maxHorizontalDistance);
 	float wantedVerticalDistance = FMath::RandRange(_minVerticalDistance, _maxVerticalDistance);
 
+	if (_maxVerticalDistance - wantedVerticalDistance < (_maxVerticalDistance / 4.0f))
+	{
+		wantedHorizontalDistance += _minHorizontalDistance / 3.0f;
+	}
+
 	FVector lastPlatformEdgeLocation = lastPlatform->GetActorLocation() + FVector((lastPlatformSize.X / 2.0f), 0.0f, 0.0f);
 	FVector newPlatformCenterLocation = FVector(newPlatformSize.X / 2.0f, 0.0f, 0.0f);
 
 	FVector resultLocation = lastPlatformEdgeLocation + FVector(wantedHorizontalDistance, 0.0f, wantedVerticalDistance) + newPlatformCenterLocation;
 
-	if (resultLocation.Z < -10000.f)
+	if (resultLocation.Z < -5000.f)
 	{
 		resultLocation.Z += FMath::Abs(wantedVerticalDistance);
 	}
-	else if (resultLocation.Z > 10000.f)
+	else if (resultLocation.Z > 5000.f)
 	{
 		resultLocation.Z -= FMath::Abs(wantedVerticalDistance);
 	}
 
 	return resultLocation;
+}
+
+void ALevelGenerator::UpdateDifficultyParameters()
+{
+	if (_difficultyIndex > _maxDifficultyLevel)
+	{
+		_difficultyIndex = _maxDifficultyLevel;
+	}
+
+	_minPlatformSize = _balanceTable->MinPlatformValues[_difficultyIndex];
+	_maxPlatformSize = _balanceTable->MaxPlatformValues[_difficultyIndex];
+	_minHorizontalDistance = _balanceTable->MinDistanceValues[_difficultyIndex];
+	_maxHorizontalDistance = _balanceTable->MaxDistanceValues[_difficultyIndex];
+	_minVerticalDistance = _balanceTable->MinHeightValues[_difficultyIndex];
+	_maxVerticalDistance = _balanceTable->MaxHeightValues[_difficultyIndex];
+
+	_difficultyIndex++;
 }
 

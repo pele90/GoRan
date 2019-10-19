@@ -65,7 +65,7 @@ void AJumpingPlayerController::Tick(float DeltaTime)
 		}
 	}
 
-	_playerCharacter->AddMovementInput(FVector(1.f, 0.f, 0.f), 2.0f);
+	_playerCharacter->AddMovementInput(FVector(1.0f, 0.f, 0.f));
 }
 
 void AJumpingPlayerController::SetupInputComponent()

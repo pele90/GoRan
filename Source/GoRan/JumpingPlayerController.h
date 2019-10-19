@@ -51,4 +51,5 @@ private:
 
 	UPROPERTY()
 	UDistanceWidget* _distanceWidget;
+
 };

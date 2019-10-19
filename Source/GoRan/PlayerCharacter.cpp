@@ -34,7 +34,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (GetActorLocation().Z < -10000.0f)
+	if (GetActorLocation().Z < -5000.0f)
 	{
 		Destroy();
 	}

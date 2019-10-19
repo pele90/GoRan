@@ -8,6 +8,7 @@
 #include "LevelGenerator.generated.h"
 
 class APlayerCharacter;
+class UBalanceTable;
 
 UCLASS()
 class GORAN_API ALevelGenerator : public AActor
@@ -30,9 +31,14 @@ public:
 
 	FVector GetNewLocation(AActor* lastPlatform, AActor* newPlatform);
 
+	void UpdateDifficultyParameters();
+
 private:
 	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
 	TSubclassOf<AActor> _platformClass;
+
+	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
+	UBalanceTable* _balanceTable;
 
 	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
 	float _minPlatformSize;
@@ -53,14 +59,21 @@ private:
 	float _maxVerticalDistance;
 
 	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _difficultyModifier;
+	float _distanceToSpawnPlatform;
 
 	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _distanceToSpawnPlatform;
+	float _timeToChangeDifficulty = 60.0f;
+
+	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
+	uint8 _maxDifficultyLevel = 7;
 
 	TQueue<AActor*> _platformQueue;
 
 	APlayerCharacter* _playerCharacter;
 
 	AActor* _lastPlatform;
+	
+	float _gameTimer;
+
+	uint8 _difficultyIndex;
 };

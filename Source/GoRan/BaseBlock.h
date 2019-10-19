@@ -26,4 +26,19 @@ public:
 private:
 	FName _connectingSocket;
 
+	FVector _velocity;
+
+	UPROPERTY(EditAnywhere, Category = "Difficulty")
+	float _difficultyModifierIncreaseAmount = 2.0f;
+
+	UPROPERTY(EditAnywhere, Category = "Difficulty")
+	float _timeToStartIncreaseDifficultyModifier;
+
+	UPROPERTY(EditAnywhere, Category = "Difficulty")
+	float _horizontalSpeed = 1.0f;
+
+	bool _bIncreasDifficultyModifier;
+
+	float _gameTimer;
+
 };

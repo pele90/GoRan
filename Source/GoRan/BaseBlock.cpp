@@ -16,6 +16,7 @@ void ABaseBlock::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	/*_velocity = FVector(-1.0f, 0.f, 0.f);*/
 }
 
 // Called every frame
@@ -23,5 +24,20 @@ void ABaseBlock::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	/*_gameTimer += DeltaTime;
+
+	if (_gameTimer > _timeToStartIncreaseDifficultyModifier)
+	{
+		_bIncreasDifficultyModifier = true;
+	}
+
+	if (_bIncreasDifficultyModifier)
+	{
+		_horizontalSpeed += _difficultyModifierIncreaseAmount;
+		_bIncreasDifficultyModifier = false;
+		_gameTimer = 0.0f;
+	}
+
+	SetActorLocation(GetActorLocation() + _velocity * _horizontalSpeed);*/
 }
 
