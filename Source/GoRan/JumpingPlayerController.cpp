@@ -84,23 +84,23 @@ void AJumpingPlayerController::Move_XAxis(float AxisValue)
 	{
 		if (AxisValue > 0.0f)
 		{
-			StartFalling();
+			StopFalling();
 		}
 		else
 		{
-			StopFalling();
+			StartFalling();
 		}
 	}
 }
 
 void AJumpingPlayerController::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
-	StartFalling();
+	StopFalling();
 }
 
 void AJumpingPlayerController::TouchStopped(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
-	StopFalling();
+	StartFalling();
 }
 
 void AJumpingPlayerController::StartFalling()
