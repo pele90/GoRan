@@ -145,9 +145,9 @@ FVector ALevelGenerator::GetNewLocation(AActor* lastPlatform, AActor* newPlatfor
 
 void ALevelGenerator::UpdateDifficultyParameters()
 {
-	if (_difficultyIndex > _maxDifficultyLevel)
+	if (_difficultyIndex > _maxDifficultyLevel - 1)
 	{
-		_difficultyIndex = _maxDifficultyLevel;
+		_difficultyIndex = _maxDifficultyLevel - 1;
 	}
 
 	_minPlatformSize = _balanceTable->MinPlatformValues[_difficultyIndex];

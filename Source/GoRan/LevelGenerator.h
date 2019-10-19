@@ -41,24 +41,6 @@ private:
 	UBalanceTable* _balanceTable;
 
 	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _minPlatformSize;
-	
-	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _maxPlatformSize;
-
-	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _minHorizontalDistance;
-
-	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _maxHorizontalDistance;
-
-	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _minVerticalDistance;
-
-	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
-	float _maxVerticalDistance;
-
-	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
 	float _distanceToSpawnPlatform;
 
 	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
@@ -66,6 +48,18 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "LevelGenerator")
 	uint8 _maxDifficultyLevel = 7;
+
+	float _minPlatformSize;
+	
+	float _maxPlatformSize;
+
+	float _minHorizontalDistance;
+
+	float _maxHorizontalDistance;
+
+	float _minVerticalDistance;
+
+	float _maxVerticalDistance;
 
 	TQueue<AActor*> _platformQueue;
 
